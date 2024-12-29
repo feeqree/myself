@@ -1,2 +1,2 @@
 # myself
-mobile programmin project
+mobile programming project
