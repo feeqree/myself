@@ -2,6 +2,8 @@ package com.example.myselfapp.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
@@ -16,21 +18,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myselfapp.R
+import com.example.myselfapp.viewmodel.Note
+import com.example.myselfapp.viewmodel.NotesViewModel
 import com.example.myselfapp.ui.theme.MySelfAppTheme
+import java.text.DateFormat
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(onLogoutClick: () -> Unit, onFabClick: () -> Unit) {
-    val selectedIndex = remember { mutableIntStateOf(0) } // For BottomBar selection
+fun MainScreen(
+    onLogoutClick: () -> Unit,
+    onFabClick: () -> Unit,
+    notesViewModel: NotesViewModel
+) {
+    val selectedIndex = remember { mutableIntStateOf(0) }
+    val notesList = notesViewModel.notes
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("MySelf") },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        // Hamburger Menu TO-DO
-                    }) {
+                    IconButton(onClick = { /* TODO: Hamburger Menu */ }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_menu_24),
                             contentDescription = "Menu"
@@ -45,16 +54,14 @@ fun MainScreen(onLogoutClick: () -> Unit, onFabClick: () -> Unit) {
             )
         },
         bottomBar = {
-            BottomBar(selectedIndex.intValue) { index ->
-                selectedIndex.intValue = index
-            }
+            BottomBar(selectedIndex.intValue) { index -> selectedIndex.intValue = index }
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onFabClick,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Create, contentDescription = "Edit")
+                Icon(Icons.Default.Create, contentDescription = "Add Note")
             }
         },
         content = { innerPadding ->
@@ -62,18 +69,53 @@ fun MainScreen(onLogoutClick: () -> Unit, onFabClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFFB2FF59))
-                    .padding(innerPadding) // Apply innerPadding to avoid overlap with the BottomBar
+                    .padding(innerPadding)
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Welcome to the Home Page",
+                    text = "Welcome to MySelf",
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(16.dp)
                 )
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    items(notesList) { note ->
+                        NoteItem(note = note)
+                    }
+                }
             }
         }
     )
 }
+
+@Composable
+fun NoteItem(note: Note) {
+    val formattedDate = remember(note.date) {
+        java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(note.date)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
+            .padding(16.dp)
+    ) {
+        Text(text = formattedDate, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = note.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = note.text, style = MaterialTheme.typography.bodyMedium)
+        Spacer(modifier = Modifier.height(8.dp))
+        if (note.mediaUri != null) {
+            Text(text = "Media attached", color = Color.Gray)
+        }
+    }
+}
+
+
 
 @Composable
 fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
@@ -124,10 +166,30 @@ fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
+    val notesViewModel = NotesViewModel()
+
+    notesViewModel.addNote(
+        Note(
+            title = "Sample Title 1",
+            text = "This is the content of the first sample note.",
+            date = System.currentTimeMillis(),
+            mediaUri = null
+        )
+    )
+    notesViewModel.addNote(
+        Note(
+            title = "Sample Title 2",
+            text = "Another example of a note with different content.",
+            date = System.currentTimeMillis(),
+            mediaUri = null
+        )
+    )
+
     MySelfAppTheme {
         MainScreen(
             onLogoutClick = {},
-            onFabClick = {}
+            onFabClick = {},
+            notesViewModel = notesViewModel
         )
     }
 }

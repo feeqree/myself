@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MySelfApp</string>
+    <string name="add_note_prompt">Add your note below</string>
+    <string name="enter_note_placeholder">Enter your note here...</string>
+    <string name="attach_media">Attach Media</string>
+    <string name="submit">Confirm</string>
+    <string name="prompt_feel_today">How do you feel today?</string>
+    <string name="prompt_what_happened">Tell me what happened.</string>
+    <string name="prompt_on_your_mind">Something on your mind?</string>
+    <string name="prompt_about_yourself">Tell me about yourself.</string>
 </resources>

@@ -4,12 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myselfapp.screens.*
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.myselfapp.navigation.AppNavigation
 import com.example.myselfapp.ui.theme.MySelfAppTheme
+import com.example.myselfapp.viewmodel.NotesViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,39 +19,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             MySelfAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    AppContent()
+                    val notesViewModel: NotesViewModel = viewModel()
+                    val navController = rememberNavController()
+                    AppNavigation(navController = navController, notesViewModel = notesViewModel)
                 }
             }
         }
     }
 }
-
-@Composable
-fun AppContent() {
-    var currentScreen by remember { mutableStateOf("login") }
-
-    when (currentScreen) {
-        "login" -> LoginScreen(
-            onLoginClick = { currentScreen = "main" },
-            onSignupClick = { currentScreen = "signup" }
-        )
-        "signup" -> SignupScreen(
-            onSignupDone = { currentScreen = "signupSuccess" },
-            onBackClick = { currentScreen = "login" }
-        )
-        "signupSuccess" -> SignupSuccessScreen(
-            onLoginClick = { currentScreen = "login" },
-            onBackClick = { currentScreen = "signup" }
-        )
-        "main" -> MainScreen(onLogoutClick = { currentScreen = "login" }, onFabClick = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AppContentPreview() {
-    MySelfAppTheme {
-        AppContent()
-    }
-}
-
