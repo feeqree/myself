@@ -24,6 +24,7 @@ import com.example.myselfapp.ui.theme.MySelfAppTheme
 fun AddNoteScreen(
     navController: NavController,
     onSubmitNote: (Note) -> Unit,
+    onLogoutClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     // List of random prompts
@@ -42,8 +43,8 @@ fun AddNoteScreen(
     Scaffold(
         topBar = {
             TopBar(
-                onLogoutClick = { /* Handle logout */ },
-                onHamburgerClick = { /* Handle hamburger menu */ }
+                onLogoutClick = onLogoutClick,
+                onHamburgerClick = { navController.navigate("profile") } // Navigate to ProfileScreen
             )
         },
         bottomBar = {
@@ -52,6 +53,16 @@ fun AddNoteScreen(
                     0 -> navController.navigate("main") {
                         popUpTo("main") { inclusive = true }
                         launchSingleTop = true
+                    }
+                    1 -> navController.navigate("quotes") {
+                        popUpTo("quotes") { inclusive = true }
+                        launchSingleTop = true
+                    }
+                    2 -> navController.navigate("mood_tracker") {
+                        // Navigate to MoodTrackerScreen
+                    }
+                    3 -> navController.navigate("view_chart") {
+                        // Navigate to ViewChartScreen
                     }
                 }
             }

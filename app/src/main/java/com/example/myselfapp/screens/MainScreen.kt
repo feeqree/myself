@@ -17,16 +17,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.myselfapp.R
+import com.example.myselfapp.navigation.TopBar
 import com.example.myselfapp.viewmodel.Note
 import com.example.myselfapp.viewmodel.NotesViewModel
 import com.example.myselfapp.ui.theme.MySelfAppTheme
-import java.text.DateFormat
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    navController: NavController, // Added NavController parameter
     onLogoutClick: () -> Unit,
     onFabClick: () -> Unit,
     notesViewModel: NotesViewModel
@@ -36,25 +38,28 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("MySelf") },
-                navigationIcon = {
-                    IconButton(onClick = { /* TODO: Hamburger Menu */ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_menu_24),
-                            contentDescription = "Menu"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onLogoutClick) {
-                        Icon(painter = painterResource(id = R.drawable.profile), contentDescription = null)
-                    }
-                }
+            TopBar(
+                onLogoutClick = onLogoutClick,
+                onHamburgerClick = { navController.navigate("profile") } // Navigate to ProfileScreen
             )
         },
         bottomBar = {
-            BottomBar(selectedIndex.intValue) { index -> selectedIndex.intValue = index }
+            BottomBar(selectedIndex = 0) { index ->
+                when (index) {
+                    0 -> navController.navigate("main") {
+
+                    }
+                    1 -> navController.navigate("quotes") {
+
+                    }
+                    2 -> navController.navigate("mood_tracker") {
+                        // Navigate to MoodTrackerScreen
+                    }
+                    3 -> navController.navigate("view_chart") {
+                        // Navigate to ViewChartScreen
+                    }
+                }
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -115,8 +120,6 @@ fun NoteItem(note: Note) {
     }
 }
 
-
-
 @Composable
 fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
     NavigationBar(
@@ -134,8 +137,8 @@ fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.quotes),
                     contentDescription = "Quotes"
-                ) },
-
+                )
+            },
             label = { Text(text = "Quotes") },
             selected = selectedIndex == 1,
             onClick = { onItemSelected(1) }
@@ -145,7 +148,8 @@ fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.moods),
                     contentDescription = "Mood Tracker"
-                ) },
+                )
+            },
             label = { Text(text = "Mood Tracker") },
             selected = selectedIndex == 2,
             onClick = { onItemSelected(2) }
@@ -155,7 +159,8 @@ fun BottomBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.chart),
                     contentDescription = "View Chart"
-                ) },
+                )
+            },
             label = { Text(text = "View Chart") },
             selected = selectedIndex == 3,
             onClick = { onItemSelected(3) }
@@ -187,6 +192,7 @@ fun MainScreenPreview() {
 
     MySelfAppTheme {
         MainScreen(
+            navController = rememberNavController(), // Pass NavController
             onLogoutClick = {},
             onFabClick = {},
             notesViewModel = notesViewModel

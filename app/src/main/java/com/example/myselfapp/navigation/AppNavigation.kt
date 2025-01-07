@@ -30,6 +30,7 @@ fun AppNavigation(navController: NavHostController, notesViewModel: NotesViewMod
         }
         composable("main") {
             MainScreen(
+                navController = navController,
                 onLogoutClick = { navController.navigate("login") },
                 onFabClick = { navController.navigate("addNote") },
                 notesViewModel = notesViewModel
@@ -37,12 +38,42 @@ fun AppNavigation(navController: NavHostController, notesViewModel: NotesViewMod
         }
         composable("addNote") {
             AddNoteScreen(
-                navController = navController, // Pass NavController here
+                navController = navController,
                 onSubmitNote = { note ->
                     notesViewModel.addNote(note)
                     navController.navigate("main") { popUpTo("main") { inclusive = true } }
                 },
-                onBackClick = { navController.popBackStack() } // Handle back navigation
+                onBackClick = { navController.popBackStack() },
+                onLogoutClick = { navController.navigate("login") }
+            )
+        }
+        composable("profile") {
+            ProfileScreen(
+                navController = navController,
+                onLogoutClick = { navController.navigate("login") }
+            )
+        }
+        composable("mood_tracker") {
+            MoodTrackerScreen(
+                navController = navController,
+                onLogoutClick = { navController.navigate("login") }
+            )
+        }
+        composable("view_chart") {
+            ViewChartScreen(
+                navController = navController,
+                onLogoutClick = { navController.navigate("login") }
+            )
+        }
+        composable("badges") {
+            BadgesScreen(navController = navController)
+        }
+        composable("quotes") {
+            QuotesScreen(
+                navController = navController,
+                onLogoutClick = { navController.navigate("login") },
+                onFabClick = { navController.navigate("addQuote") }, // Navigate to AddQuoteScreen
+                notesViewModel = notesViewModel
             )
         }
     }
