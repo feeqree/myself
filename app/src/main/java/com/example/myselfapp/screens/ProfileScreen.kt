@@ -104,9 +104,23 @@ fun ProfileScreen(navController: NavController, onLogoutClick: () -> Unit) {
                                 .padding(16.dp)
                                 .clickable {
                                     if (option == "Badges") {
-                                        navController.navigate("badges") // Navigate to BadgesScreen
+                                        navController.navigate("badges")
                                     }
-                                    // Handle other options if needed
+                                    else if (option == "Edit Personalized Palette") {
+
+                                    }
+                                    else if (option == "Mood Chart") {
+
+                                    }
+                                    else if (option == "Summary") {
+
+                                    }
+                                    else if (option == "Edit Moods") {
+
+                                    }
+                                    else if (option == "Change Password") {
+
+                                    }
                                 }
                         )
                     }
