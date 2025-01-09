@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "750746198709",
+    "project_id": "myselfapp-cf16d",
+    "storage_bucket": "myselfapp-cf16d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750746198709:android:70d7992ab515c32f0254fc",
+        "android_client_info": {
+          "package_name": "com.example.myselfapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkCNFFwPLlnCSy-r6HjxYs6Z_-wxdf31g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

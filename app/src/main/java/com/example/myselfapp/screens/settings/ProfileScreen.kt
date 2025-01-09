@@ -1,4 +1,4 @@
-package com.example.myselfapp.screens
+package com.example.myselfapp.screens.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myselfapp.navigation.TopBar
+import com.example.myselfapp.screens.BottomBar
 
 @Composable
 fun ProfileScreen(navController: NavController, onLogoutClick: () -> Unit) {
